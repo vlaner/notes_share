@@ -1,0 +1,2 @@
+# Simple notes sharing app with optional encryption utilizing standard library as much as possible. 
+### Built with hexagonal architecture, decoupling core logic from specifics of transport and persistance layers.

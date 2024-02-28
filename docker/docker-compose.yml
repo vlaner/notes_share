@@ -1,0 +1,40 @@
+version: '3.8'  
+
+networks:
+  default:
+    driver: bridge
+
+services:
+  backend_server:
+    container_name: backend_server
+    build: 
+      context: ../
+      dockerfile: docker/Go.Dockerfile
+    volumes:
+      - ../www:/app/www
+      - "../db:/app/db"
+    command: "./notes"
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    tty: true
+    restart: unless-stopped
+    networks:
+      - default
+
+  nginx:
+    build: 
+      context: ./
+      dockerfile: Nginx.Dockerfile
+    volumes:
+      - ../www:/etc/nginx/static
+
+    restart: unless-stopped
+    ports:
+      - 443:443
+      - 80:80
+    depends_on:
+      - backend_server
+    networks:
+      - default
